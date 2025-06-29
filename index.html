@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>📚 Calculadora de Notas</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <!-- ☀️ Botón modo claro/oscuro -->
+  <button id="modo-toggle">🌙</button>
+
+  <!-- 🧠 Instrucciones -->
+  <section class="instrucciones-udi" id="bloqueInstrucciones">
+    <h2>🧠 Calculadora de Notas</h2>
+    <h3>📌 Cálculo de Notas:</h3>
+    <p>Ingresa las notas del Parcial, Quiz y Trabajo. Haz clic en <strong>∑</strong> para calcular el corte.</p>
+    <p>Para el final, calcula los 3 cortes y haz clic en <strong>∑ Calcular Final</strong>.</p>
+    <h3>🎯 Estimados:</h3>
+    <p>Deja una casilla vacía y haz clic en <strong>❓</strong> para saber cuánto necesitas.</p>
+    <p>Haz clic en <strong>❓ Estimar Nota Final</strong> para saber cuánto necesitas sacar en un corte faltante.</p>
+  </section>
+
+  <!-- 📚 Título -->
+  <h1>📚 Calculadora de Notas</h1>
+
+  <!-- 📤 Botones de exportación -->
+  <div class="exportar-container">
+    <button id="imprimir-btn">🖨️ Imprimir</button>
+    <button id="exportar-pdf-btn">📥 Exportar PDF</button>
+    <button id="exportar-excel-btn">📊 Exportar Excel</button>
+  </div>
+
+  <!-- 🧾 Tabla de notas -->
+  <table>
+    <thead>
+      <tr><th>Actividad</th><th>%</th><th>Nota</th><th>General</th></tr>
+    </thead>
+    <tbody>
+      <!-- Corte 1 -->
+      <tr class="seccion"><td colspan="4">✏️ Corte 1</td></tr>
+      <tr><td>Parcial</td><td>20%</td><td><input class="corte1" data-porcentaje="20" type="number"></td><td><input disabled></td></tr>
+      <tr><td>Quiz</td><td>5%</td><td><input class="corte1" data-porcentaje="5" type="number"></td><td><input disabled></td></tr>
+      <tr><td>Trabajo</td><td>5%</td><td><input class="corte1" data-porcentaje="5" type="number"></td><td><input disabled></td></tr>
+      <tr id="row-total-corte-1">
+        <td><strong>Total Corte 1 (30%)</strong></td>
+        <td colspan="2">
+          <input id="manualCorte1" type="number" placeholder="Escribe tu nota">
+          <button id="usar-manual-1-btn">✅</button>
+          <span id="totalCorte1">-</span>
+          <div class="barra-container"><div class="barra" id="barraCorte1"></div></div>
+        </td>
+        <td class="acciones">
+          <button id="calcular-corte-1-btn">∑</button>
+          <button id="estimar-corte-1-btn">❓</button>
+        </td>
+      </tr>
+
+      <!-- Corte 2 -->
+      <tr class="seccion"><td colspan="4">📘 Corte 2</td></tr>
+      <tr><td>Parcial</td><td>20%</td><td><input class="corte2" data-porcentaje="20" type="number"></td><td><input disabled></td></tr>
+      <tr><td>Quiz</td><td>5%</td><td><input class="corte2" data-porcentaje="5" type="number"></td><td><input disabled></td></tr>
+      <tr><td>Trabajo</td><td>5%</td><td><input class="corte2" data-porcentaje="5" type="number"></td><td><input disabled></td></tr>
+      <tr id="row-total-corte-2">
+        <td><strong>Total Corte 2 (30%)</strong></td>
+        <td colspan="2">
+          <input id="manualCorte2" type="number" placeholder="Escribe tu nota">
+          <button id="usar-manual-2-btn">✅</button>
+          <span id="totalCorte2">-</span>
+          <div class="barra-container"><div class="barra" id="barraCorte2"></div></div>
+        </td>
+        <td class="acciones">
+          <button id="calcular-corte-2-btn">∑</button>
+          <button id="estimar-corte-2-btn">❓</button>
+        </td>
+      </tr>
+
+      <!-- Corte 3 -->
+      <tr class="seccion"><td colspan="4">📗 Corte 3</td></tr>
+      <tr><td>Parcial</td><td>30%</td><td><input class="corte3" data-porcentaje="30" type="number"></td><td><input disabled></td></tr>
+      <tr><td>Quiz</td><td>5%</td><td><input class="corte3" data-porcentaje="5" type="number"></td><td><input disabled></td></tr>
+      <tr><td>Trabajo</td><td>5%</td><td><input class="corte3" data-porcentaje="5" type="number"></td><td><input disabled></td></tr>
+      <tr id="row-total-corte-3">
+        <td><strong>Total Corte 3 (40%)</strong></td>
+        <td colspan="2">
+          <input id="manualCorte3" type="number" placeholder="Escribe tu nota">
+          <button id="usar-manual-3-btn">✅</button>
+          <span id="totalCorte3">-</span>
+          <div class="barra-container"><div class="barra" id="barraCorte3"></div></div>
+        </td>
+        <td class="acciones">
+          <button id="calcular-corte-3-btn">∑</button>
+          <button id="estimar-corte-3-btn">❓</button>
+        </td>
+      </tr>
+
+      <!-- Nota Final -->
+      <tr>
+        <td colspan="3"><strong>📊 Nota Final</strong></td>
+        <td>
+          <input id="metaFinal" type="number" placeholder="Tu meta" step="0.1" min="0" max="5">
+          <span id="notaFinal">-</span>
+          <div class="barra-container"><div class="barra" id="barraFinal"></div></div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="4" class="acciones">
+          <button id="calcular-final-btn">∑ Calcular Final</button>
+          <button id="limpiar-todo-btn">🗑 Limpiar Todo</button>
+          <button id="estimar-final-btn">❓ Estimar Nota Final</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <!-- ✍️ Créditos -->
+  <footer class="footer-autores">
+    ✍️ Creado por <strong>Carlos Manuel Turizo Hernández</strong> y <strong>Jesús Alberto Turizo Hernández</strong> – 2025
+  </footer>
+
+  <!-- 📘 Botón flotante -->
+  <button id="toggleInstrucciones" class="boton-instrucciones" title="Mostrar/Ocultar instrucciones">📘</button>
+
+  <!-- Modal personalizado -->
+  <div id="custom-modal" class="modal-overlay">
+    <div class="modal-content">
+      <h3 id="modal-title"></h3>
+      <p id="modal-message"></p>
+      <input id="modal-input" type="number">
+      <div class="modal-buttons">
+        <button id="modal-ok-btn">OK</button>
+        <button id="modal-cancel-btn">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ✅ Librerías externas corregidas -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/xlsx.mini.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+  <!-- Lógica de la calculadora -->
+  <script src="script.js"></script>
+</body>
+</html>
