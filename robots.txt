@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://manu270422.github.io/calculadora-notas/sitemap.xml
