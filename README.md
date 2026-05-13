@@ -106,10 +106,10 @@ Dado un objetivo y las actividades ya calificadas, la calculadora despeja la not
 
 ```
 calculadora-notas/
-├── index.html        # Estructura principal
-├── style.css         # Estilos y temas (claro/oscuro)
-├── script.js         # Lógica de cálculo y exportación
-├── preview.png       # Captura de pantalla para documentación
+├── index.html        # Estructura principal.
+├── style.css         # Estilos y temas (claro/oscuro).
+├── script.js         # Lógica de cálculo y exportación.
+├── preview.png       # Captura de pantalla para documentación.
 └── README.md
 ```
 
