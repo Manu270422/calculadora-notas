@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>📚 Calculadora de Notas</title>
+
+  <!-- Verificación Google Search Console -->
+  <meta name="google-site-verification" content="RpZL2WK8zgoFsBz33rmIgxsNvBMJpbwwQZ8RI1D150g" />
+  <meta name="description" content="Calculadora de notas universitaria con porcentajes por cortes, estimación de notas y exportación a PDF y Excel." />
+
+  <!-- Fuentes: uso Sora para titulos y DM Sans para el cuerpo, se ven elegantes y modernas -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css" />
+</head>
+
+<body>
+  <!-- Botón modo claro/oscuro, fijo arriba a la derecha -->
+  <button id="modo-toggle" aria-label="Cambiar modo claro/oscuro">🌙</button>
+
+  <!-- Encabezado principal -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="header-logo">📚</div>
+      <div>
+        <h1>Calculadora de Notas</h1>
+        <p class="header-sub">Lleva el control de tu semestre académico</p>
+      </div>
+    </div>
+  </header>
+
+  <main class="main-container">
+
+    <!-- Sección de instrucciones colapsable -->
+    <section class="instrucciones-card" id="bloqueInstrucciones">
+      <div class="instrucciones-header" id="toggleInstruccionesHeader" role="button" tabindex="0" aria-expanded="true">
+        <span>📘 ¿Cómo usar la calculadora?</span>
+        <span class="instrucciones-chevron" id="instruccionesChevron">▲</span>
+      </div>
+      <div class="instrucciones-body" id="instruccionesBody">
+        <div class="instrucciones-grid">
+          <div class="instruc-item">
+            <span class="instruc-icon">✏️</span>
+            <div>
+              <strong>Calcular un corte</strong>
+              <p>Ingresa tus notas de Parcial, Quiz y Trabajo, luego presiona <kbd>∑</kbd> o escribe y se calcula automáticamente.</p>
+            </div>
+          </div>
+          <div class="instruc-item">
+            <span class="instruc-icon">📝</span>
+            <div>
+              <strong>Nota manual</strong>
+              <p>Si ya tienes tu nota del corte, escríbela en "Mi nota" y presiona <kbd>✅</kbd>.</p>
+            </div>
+          </div>
+          <div class="instruc-item">
+            <span class="instruc-icon">🎯</span>
+            <div>
+              <strong>Estimar</strong>
+              <p>Deja una casilla vacía y presiona <kbd>❓</kbd> para saber cuánto necesitas en esa actividad.</p>
+            </div>
+          </div>
+          <div class="instruc-item">
+            <span class="instruc-icon">📊</span>
+            <div>
+              <strong>Nota final</strong>
+              <p>Calcula los 3 cortes y presiona <kbd>∑ Calcular Final</kbd>. Corte 1: 30%, Corte 2: 30%, Corte 3: 40%.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Botones de exportación -->
+    <div class="exportar-bar">
+      <button class="btn-export" id="imprimir-btn">🖨️ Imprimir</button>
+      <button class="btn-export" id="exportar-pdf-btn">📄 PDF</button>
+      <button class="btn-export" id="exportar-excel-btn">📊 Excel</button>
+    </div>
+
+    <!-- Cards de los 3 cortes -->
+    <div class="cortes-grid">
+
+      <!-- CORTE 1 -->
+      <div class="corte-card" id="card-corte-1">
+        <div class="corte-card-header">
+          <div class="corte-badge badge-1">30%</div>
+          <h2>✏️ Corte 1</h2>
+        </div>
+        <div class="actividades">
+          <div class="actividad-row">
+            <label>Parcial <span class="pct-tag">20%</span></label>
+            <input class="nota-input corte1" data-porcentaje="20" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Parcial Corte 1">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c1-0"></div></div>
+          </div>
+          <div class="actividad-row">
+            <label>Quiz <span class="pct-tag">5%</span></label>
+            <input class="nota-input corte1" data-porcentaje="5" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Quiz Corte 1">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c1-1"></div></div>
+          </div>
+          <div class="actividad-row">
+            <label>Trabajo <span class="pct-tag">5%</span></label>
+            <input class="nota-input corte1" data-porcentaje="5" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Trabajo Corte 1">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c1-2"></div></div>
+          </div>
+        </div>
+        <div class="corte-manual">
+          <input id="manualCorte1" type="number" min="0" max="5" step="0.1" placeholder="Mi nota del corte">
+          <button id="usar-manual-1-btn" class="btn-manual" aria-label="Usar nota manual corte 1">✅</button>
+        </div>
+        <div class="corte-resultado" id="resultado-corte-1">
+          <div class="resultado-info">
+            <span class="resultado-label">Total Corte 1</span>
+            <span class="resultado-valor" id="totalCorte1">—</span>
+          </div>
+          <div class="barra-container"><div class="barra" id="barraCorte1"></div></div>
+        </div>
+        <div class="corte-acciones">
+          <button id="calcular-corte-1-btn" class="btn-accion btn-calcular">∑ Calcular</button>
+          <button id="estimar-corte-1-btn" class="btn-accion btn-estimar">❓ Estimar</button>
+        </div>
+      </div>
+
+      <!-- CORTE 2 -->
+      <div class="corte-card" id="card-corte-2">
+        <div class="corte-card-header">
+          <div class="corte-badge badge-2">30%</div>
+          <h2>📘 Corte 2</h2>
+        </div>
+        <div class="actividades">
+          <div class="actividad-row">
+            <label>Parcial <span class="pct-tag">20%</span></label>
+            <input class="nota-input corte2" data-porcentaje="20" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Parcial Corte 2">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c2-0"></div></div>
+          </div>
+          <div class="actividad-row">
+            <label>Quiz <span class="pct-tag">5%</span></label>
+            <input class="nota-input corte2" data-porcentaje="5" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Quiz Corte 2">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c2-1"></div></div>
+          </div>
+          <div class="actividad-row">
+            <label>Trabajo <span class="pct-tag">5%</span></label>
+            <input class="nota-input corte2" data-porcentaje="5" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Trabajo Corte 2">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c2-2"></div></div>
+          </div>
+        </div>
+        <div class="corte-manual">
+          <input id="manualCorte2" type="number" min="0" max="5" step="0.1" placeholder="Mi nota del corte">
+          <button id="usar-manual-2-btn" class="btn-manual" aria-label="Usar nota manual corte 2">✅</button>
+        </div>
+        <div class="corte-resultado" id="resultado-corte-2">
+          <div class="resultado-info">
+            <span class="resultado-label">Total Corte 2</span>
+            <span class="resultado-valor" id="totalCorte2">—</span>
+          </div>
+          <div class="barra-container"><div class="barra" id="barraCorte2"></div></div>
+        </div>
+        <div class="corte-acciones">
+          <button id="calcular-corte-2-btn" class="btn-accion btn-calcular">∑ Calcular</button>
+          <button id="estimar-corte-2-btn" class="btn-accion btn-estimar">❓ Estimar</button>
+        </div>
+      </div>
+
+      <!-- CORTE 3 -->
+      <div class="corte-card" id="card-corte-3">
+        <div class="corte-card-header">
+          <div class="corte-badge badge-3">40%</div>
+          <h2>📗 Corte 3</h2>
+        </div>
+        <div class="actividades">
+          <div class="actividad-row">
+            <label>Parcial <span class="pct-tag">30%</span></label>
+            <input class="nota-input corte3" data-porcentaje="30" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Parcial Corte 3">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c3-0"></div></div>
+          </div>
+          <div class="actividad-row">
+            <label>Quiz <span class="pct-tag">5%</span></label>
+            <input class="nota-input corte3" data-porcentaje="5" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Quiz Corte 3">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c3-1"></div></div>
+          </div>
+          <div class="actividad-row">
+            <label>Trabajo <span class="pct-tag">5%</span></label>
+            <input class="nota-input corte3" data-porcentaje="5" type="number" min="0" max="5" step="0.1" placeholder="0.0" aria-label="Nota Trabajo Corte 3">
+            <div class="mini-barra-wrap"><div class="mini-barra" id="mb-c3-2"></div></div>
+          </div>
+        </div>
+        <div class="corte-manual">
+          <input id="manualCorte3" type="number" min="0" max="5" step="0.1" placeholder="Mi nota del corte">
+          <button id="usar-manual-3-btn" class="btn-manual" aria-label="Usar nota manual corte 3">✅</button>
+        </div>
+        <div class="corte-resultado" id="resultado-corte-3">
+          <div class="resultado-info">
+            <span class="resultado-label">Total Corte 3</span>
+            <span class="resultado-valor" id="totalCorte3">—</span>
+          </div>
+          <div class="barra-container"><div class="barra" id="barraCorte3"></div></div>
+        </div>
+        <div class="corte-acciones">
+          <button id="calcular-corte-3-btn" class="btn-accion btn-calcular">∑ Calcular</button>
+          <button id="estimar-corte-3-btn" class="btn-accion btn-estimar">❓ Estimar</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Card de Nota Final -->
+    <div class="final-card" id="card-final">
+      <div class="final-left">
+        <h2>📊 Nota Final</h2>
+        <p class="final-sub">Promedio ponderado de tus 3 cortes</p>
+        <div class="final-meta-row">
+          <label for="metaFinal">🎯 Mi meta:</label>
+          <input id="metaFinal" type="number" min="0" max="5" step="0.1" placeholder="3.0" aria-label="Nota meta final">
+        </div>
+      </div>
+      <div class="final-right">
+        <div class="nota-final-display">
+          <span id="notaFinal">—</span>
+          <span class="nota-final-max">/ 5.0</span>
+        </div>
+        <div class="barra-container barra-final-container">
+          <div class="barra" id="barraFinal"></div>
+        </div>
+        <div id="final-estado" class="final-estado"></div>
+      </div>
+    </div>
+
+    <!-- Acciones finales -->
+    <div class="acciones-finales">
+      <button id="calcular-final-btn" class="btn-accion btn-calcular btn-lg">∑ Calcular Final</button>
+      <button id="estimar-final-btn" class="btn-accion btn-estimar btn-lg">❓ Estimar Corte Faltante</button>
+      <button id="limpiar-todo-btn" class="btn-accion btn-limpiar btn-lg">🗑 Limpiar Todo</button>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    ✍️ Creado por <strong>Carlos Manuel Turizo Hernández</strong> y <strong>Jesús Alberto Turizo Hernández</strong> — 2026
+  </footer>
+
+  <!-- Modal personalizado: reutilizable para alertas, confirmaciones y prompts -->
+  <div id="custom-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-title">
+    <div class="modal-content">
+      <div class="modal-icon" id="modal-icon"></div>
+      <h3 id="modal-title"></h3>
+      <p id="modal-message"></p>
+      <input id="modal-input" type="number" class="modal-input-field hidden" aria-label="Valor a ingresar">
+      <div class="modal-buttons">
+        <button id="modal-ok-btn" class="modal-btn modal-btn-ok">Aceptar</button>
+        <button id="modal-cancel-btn" class="modal-btn modal-btn-cancel hidden">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Librerías externas: solo las que realmente uso (eliminé el duplicado de SheetJS) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/exceljs/dist/exceljs.min.js"></script>
+
+  <!-- Mi lógica principal -->
+  <script src="script.js"></script>
+</body>
+</html>

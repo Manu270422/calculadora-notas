@@ -1,0 +1,928 @@
+/* ==========================================================================
+   CALCULADORA DE NOTAS — style.css
+   Autor: Carlos Manuel Turizo Hernández / Jesús Alberto Turizo Hernández
+   Descripción: Estilos completos con diseño de cards modernas,
+   modo oscuro/claro, responsivo para móvil, tablet y escritorio.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES DE TEMA
+   Mantengo todo centralizado aquí para poder cambiar colores fácilmente.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Modo oscuro (por defecto) */
+  --bg:           #0f1117;
+  --bg-card:      #1a1d27;
+  --bg-input:     #13151e;
+  --bg-hover:     #21253a;
+  --border:       #2a2f45;
+  --border-focus: #4f7cff;
+
+  --text-primary:   #f0f2ff;
+  --text-secondary: #8890b0;
+  --text-muted:     #555e80;
+
+  --accent:      #4f7cff;
+  --accent-glow: rgba(79, 124, 255, 0.25);
+
+  --success:     #22c55e;
+  --success-bg:  rgba(34, 197, 94, 0.12);
+  --warning:     #f59e0b;
+  --warning-bg:  rgba(245, 158, 11, 0.12);
+  --danger:      #ef4444;
+  --danger-bg:   rgba(239, 68, 68, 0.12);
+
+  --badge-1: #4f7cff;
+  --badge-2: #a855f7;
+  --badge-3: #06b6d4;
+
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.3);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.4);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.5);
+
+  --radius-sm:  8px;
+  --radius-md:  14px;
+  --radius-lg:  20px;
+
+  --font-body:    'DM Sans', system-ui, sans-serif;
+  --font-display: 'Sora', system-ui, sans-serif;
+
+  --transition: 0.2s ease;
+}
+
+/* Modo claro — lo activo agregando la clase .light al body */
+body.light {
+  --bg:           #f0f4ff;
+  --bg-card:      #ffffff;
+  --bg-input:     #f5f7ff;
+  --bg-hover:     #eaedff;
+  --border:       #d4d9f0;
+  --border-focus: #4f7cff;
+
+  --text-primary:   #0f1117;
+  --text-secondary: #555e80;
+  --text-muted:     #9ba3c0;
+
+  --accent:      #3b6bff;
+  --accent-glow: rgba(59, 107, 255, 0.15);
+
+  --success:     #16a34a;
+  --success-bg:  rgba(22, 163, 74, 0.1);
+  --warning:     #d97706;
+  --warning-bg:  rgba(217, 119, 6, 0.1);
+  --danger:      #dc2626;
+  --danger-bg:   rgba(220, 38, 38, 0.1);
+
+  --shadow-sm:  0 2px 8px rgba(0,0,0,0.08);
+  --shadow-md:  0 4px 20px rgba(0,0,0,0.1);
+  --shadow-lg:  0 8px 40px rgba(0,0,0,0.12);
+}
+
+/* --------------------------------------------------------------------------
+   2. RESET Y BASE
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg);
+  color: var(--text-primary);
+  min-height: 100vh;
+  line-height: 1.6;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* --------------------------------------------------------------------------
+   3. BOTÓN MODO CLARO/OSCURO — flotante arriba a la derecha
+   -------------------------------------------------------------------------- */
+#modo-toggle {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 1000;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  font-size: 18px;
+  cursor: pointer;
+  box-shadow: var(--shadow-md);
+  transition: transform var(--transition), box-shadow var(--transition);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#modo-toggle:hover {
+  transform: scale(1.1);
+  box-shadow: var(--shadow-lg);
+}
+
+/* --------------------------------------------------------------------------
+   4. HEADER
+   -------------------------------------------------------------------------- */
+.header {
+  background: linear-gradient(135deg, var(--bg-card) 0%, var(--bg-hover) 100%);
+  border-bottom: 1px solid var(--border);
+  padding: 28px 24px 24px;
+}
+
+.header-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-logo {
+  font-size: 2.5rem;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.4rem, 4vw, 2rem);
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.03em;
+}
+
+.header-sub {
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  margin-top: 2px;
+}
+
+/* --------------------------------------------------------------------------
+   5. LAYOUT PRINCIPAL
+   -------------------------------------------------------------------------- */
+.main-container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 24px 16px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* --------------------------------------------------------------------------
+   6. CARD DE INSTRUCCIONES — colapsable
+   -------------------------------------------------------------------------- */
+.instrucciones-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.instrucciones-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  cursor: pointer;
+  user-select: none;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--accent);
+  gap: 8px;
+}
+
+.instrucciones-header:hover {
+  background: var(--bg-hover);
+}
+
+.instrucciones-chevron {
+  transition: transform 0.3s ease;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.instrucciones-card.collapsed .instrucciones-chevron {
+  transform: rotate(180deg);
+}
+
+.instrucciones-body {
+  overflow: hidden;
+  max-height: 500px;
+  transition: max-height 0.4s ease, padding 0.3s ease;
+  padding: 0 20px 20px;
+}
+
+.instrucciones-card.collapsed .instrucciones-body {
+  max-height: 0;
+  padding-bottom: 0;
+}
+
+.instrucciones-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  padding-top: 4px;
+}
+
+.instruc-item {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+
+.instruc-icon {
+  font-size: 1.5rem;
+  flex-shrink: 0;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+.instruc-item strong {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: var(--text-primary);
+}
+
+.instruc-item p {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+
+kbd {
+  display: inline-block;
+  padding: 1px 5px;
+  font-size: 0.75rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  font-family: monospace;
+}
+
+/* --------------------------------------------------------------------------
+   7. BARRA DE EXPORTACIÓN
+   -------------------------------------------------------------------------- */
+.exportar-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.btn-export {
+  padding: 9px 18px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition);
+  white-space: nowrap;
+}
+
+.btn-export:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+
+/* --------------------------------------------------------------------------
+   8. GRID DE CORTES — 3 columnas en desktop, 1 en móvil
+   -------------------------------------------------------------------------- */
+.cortes-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+@media (max-width: 900px) {
+  .cortes-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (min-width: 600px) and (max-width: 900px) {
+  .cortes-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  /* El tercer corte ocupa el ancho completo en tablet de 2 columnas */
+  .cortes-grid .corte-card:nth-child(3) {
+    grid-column: 1 / -1;
+    max-width: 50%;
+    margin: 0 auto;
+    width: 100%;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   9. CARD DE CORTE
+   -------------------------------------------------------------------------- */
+.corte-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  transition: box-shadow var(--transition), border-color var(--transition);
+}
+
+.corte-card:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* Cuando el total del corte es aprobatorio, pongo un borde de color sutil */
+.corte-card.estado-aprobado  { border-color: var(--success); }
+.corte-card.estado-advertencia { border-color: var(--warning); }
+.corte-card.estado-reprobado { border-color: var(--danger); }
+
+.corte-card-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.corte-card-header h2 {
+  font-family: var(--font-display);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.corte-badge {
+  min-width: 44px;
+  height: 28px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  font-family: var(--font-display);
+  color: #fff;
+  padding: 0 10px;
+  flex-shrink: 0;
+}
+
+.badge-1 { background: var(--badge-1); }
+.badge-2 { background: var(--badge-2); }
+.badge-3 { background: var(--badge-3); }
+
+/* --------------------------------------------------------------------------
+   10. FILAS DE ACTIVIDADES
+   -------------------------------------------------------------------------- */
+.actividades {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.actividad-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto auto;
+  gap: 4px 8px;
+  align-items: center;
+}
+
+.actividad-row label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  grid-row: 1;
+  grid-column: 1;
+}
+
+.pct-tag {
+  font-size: 0.72rem;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 1px 6px;
+  color: var(--text-muted);
+}
+
+.nota-input {
+  grid-row: 1;
+  grid-column: 2;
+  width: 80px;
+  padding: 7px 10px;
+  font-size: 0.95rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+  -moz-appearance: textfield;
+}
+
+.nota-input::-webkit-outer-spin-button,
+.nota-input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.nota-input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+/* Colores dinámicos según la nota */
+.nota-input.nota-aprobado   { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+.nota-input.nota-advertencia { border-color: var(--warning); background: var(--warning-bg); color: var(--warning); }
+.nota-input.nota-reprobado  { border-color: var(--danger);  background: var(--danger-bg);  color: var(--danger); }
+
+.mini-barra-wrap {
+  grid-row: 2;
+  grid-column: 1 / -1;
+  height: 3px;
+  background: var(--border);
+  border-radius: 2px;
+  overflow: hidden;
+}
+
+.mini-barra {
+  height: 100%;
+  width: 0;
+  border-radius: 2px;
+  transition: width 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.3s;
+}
+
+/* --------------------------------------------------------------------------
+   11. NOTA MANUAL
+   -------------------------------------------------------------------------- */
+.corte-manual {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  padding: 12px;
+  background: var(--bg-input);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+}
+
+.corte-manual input {
+  flex: 1;
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  font-family: var(--font-body);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  color: var(--text-primary);
+  transition: border-color var(--transition);
+  -moz-appearance: textfield;
+}
+
+.corte-manual input::-webkit-outer-spin-button,
+.corte-manual input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.corte-manual input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+}
+
+.corte-manual input::placeholder { color: var(--text-muted); font-size: 0.8rem; }
+
+.btn-manual {
+  padding: 7px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  background: var(--success);
+  color: #fff;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+  flex-shrink: 0;
+}
+
+.btn-manual:hover { opacity: 0.85; transform: scale(1.05); }
+
+/* --------------------------------------------------------------------------
+   12. RESULTADO DEL CORTE
+   -------------------------------------------------------------------------- */
+.corte-resultado {
+  padding: 12px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+}
+
+.resultado-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.resultado-label {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+}
+
+.resultado-valor {
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: var(--text-muted);
+  transition: color var(--transition);
+}
+
+.resultado-valor.aprobado   { color: var(--success); }
+.resultado-valor.advertencia { color: var(--warning); }
+.resultado-valor.reprobado  { color: var(--danger); }
+
+.barra-container {
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.barra {
+  height: 100%;
+  width: 0;
+  border-radius: 4px;
+  transition: width 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94), background-color 0.3s;
+}
+
+.barra.verde     { background: var(--success); }
+.barra.amarillo  { background: var(--warning); }
+.barra.rojo      { background: var(--danger); }
+
+/* --------------------------------------------------------------------------
+   13. BOTONES DE ACCIONES DEL CORTE
+   -------------------------------------------------------------------------- */
+.corte-acciones {
+  display: flex;
+  gap: 8px;
+}
+
+.btn-accion {
+  flex: 1;
+  padding: 9px 12px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition), box-shadow var(--transition);
+}
+
+.btn-accion:hover {
+  opacity: 0.88;
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+.btn-accion:active { transform: scale(0.97); }
+
+.btn-calcular {
+  background: var(--accent);
+  color: #fff;
+}
+
+.btn-estimar {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+  border: 1px solid var(--border);
+}
+
+.btn-limpiar {
+  background: var(--danger-bg);
+  color: var(--danger);
+  border: 1px solid var(--danger);
+}
+
+.btn-lg {
+  padding: 12px 20px;
+  font-size: 0.9rem;
+}
+
+/* --------------------------------------------------------------------------
+   14. CARD DE NOTA FINAL
+   -------------------------------------------------------------------------- */
+.final-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-md);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 24px;
+  align-items: center;
+  transition: border-color var(--transition);
+}
+
+.final-card.estado-aprobado   { border-color: var(--success); background: linear-gradient(135deg, var(--bg-card) 70%, var(--success-bg)); }
+.final-card.estado-advertencia { border-color: var(--warning); background: linear-gradient(135deg, var(--bg-card) 70%, var(--warning-bg)); }
+.final-card.estado-reprobado  { border-color: var(--danger);  background: linear-gradient(135deg, var(--bg-card) 70%, var(--danger-bg)); }
+
+.final-left h2 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+
+.final-sub {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.final-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.final-meta-row label {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.final-meta-row input {
+  width: 90px;
+  padding: 7px 10px;
+  font-size: 0.875rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  transition: border-color var(--transition);
+  -moz-appearance: textfield;
+}
+
+.final-meta-row input::-webkit-outer-spin-button,
+.final-meta-row input::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.final-meta-row input:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.final-right {
+  text-align: center;
+  min-width: 140px;
+}
+
+.nota-final-display {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 4px;
+  margin-bottom: 10px;
+}
+
+#notaFinal {
+  font-family: var(--font-display);
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  font-weight: 800;
+  color: var(--text-muted);
+  transition: color 0.4s, transform 0.3s;
+  line-height: 1;
+}
+
+#notaFinal.aprobado   { color: var(--success); }
+#notaFinal.advertencia { color: var(--warning); }
+#notaFinal.reprobado  { color: var(--danger); }
+#notaFinal.pop { animation: pop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+
+@keyframes pop {
+  0%   { transform: scale(1); }
+  50%  { transform: scale(1.18); }
+  100% { transform: scale(1); }
+}
+
+.nota-final-max {
+  font-size: 1rem;
+  color: var(--text-muted);
+}
+
+.barra-final-container {
+  height: 10px;
+  margin-bottom: 8px;
+}
+
+.final-estado {
+  font-size: 0.8rem;
+  font-weight: 600;
+  min-height: 18px;
+}
+
+.final-estado.aprobado   { color: var(--success); }
+.final-estado.advertencia { color: var(--warning); }
+.final-estado.reprobado  { color: var(--danger); }
+
+@media (max-width: 600px) {
+  .final-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  .final-meta-row { justify-content: center; }
+  .final-right { margin: 0 auto; }
+}
+
+/* --------------------------------------------------------------------------
+   15. ACCIONES FINALES
+   -------------------------------------------------------------------------- */
+.acciones-finales {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.acciones-finales .btn-accion {
+  flex: 1;
+  min-width: 160px;
+}
+
+/* --------------------------------------------------------------------------
+   16. MODAL PERSONALIZADO
+   Reemplacé los alert/confirm/prompt del navegador por este modal propio,
+   que respeta el tema oscuro/claro y se ve mucho mejor.
+   -------------------------------------------------------------------------- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+  visibility: hidden;
+  opacity: 0;
+  transition: visibility 0.25s, opacity 0.25s;
+}
+
+.modal-overlay.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 32px 28px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+  max-width: 420px;
+  width: calc(100% - 32px);
+  transform: translateY(16px) scale(0.97);
+  transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.modal-overlay.visible .modal-content {
+  transform: translateY(0) scale(1);
+}
+
+.modal-icon {
+  font-size: 2.5rem;
+  margin-bottom: 12px;
+  line-height: 1;
+  min-height: 40px;
+}
+
+.modal-content h3 {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+
+.modal-content p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.modal-input-field {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 1.1rem;
+  font-family: var(--font-display);
+  font-weight: 600;
+  text-align: center;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-input);
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  transition: border-color var(--transition), box-shadow var(--transition);
+  -moz-appearance: textfield;
+}
+
+.modal-input-field::-webkit-outer-spin-button,
+.modal-input-field::-webkit-inner-spin-button { -webkit-appearance: none; }
+
+.modal-input-field:focus {
+  outline: none;
+  border-color: var(--border-focus);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+
+.modal-btn {
+  flex: 1;
+  max-width: 140px;
+  padding: 10px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity var(--transition), transform var(--transition);
+}
+
+.modal-btn:hover { opacity: 0.88; transform: translateY(-1px); }
+.modal-btn:active { transform: scale(0.97); }
+
+.modal-btn-ok     { background: var(--accent); color: #fff; }
+.modal-btn-cancel { background: var(--danger-bg); color: var(--danger); border: 1px solid var(--danger); }
+
+/* --------------------------------------------------------------------------
+   17. FOOTER
+   -------------------------------------------------------------------------- */
+.footer {
+  text-align: center;
+  padding: 24px 16px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  border-top: 1px solid var(--border);
+}
+
+/* --------------------------------------------------------------------------
+   18. UTILIDADES
+   -------------------------------------------------------------------------- */
+.hidden { display: none !important; }
+
+/* --------------------------------------------------------------------------
+   19. ESTILOS DE IMPRESIÓN — solo muestro los datos relevantes
+   -------------------------------------------------------------------------- */
+@media print {
+  #modo-toggle, .exportar-bar, .instrucciones-card,
+  .corte-acciones, .acciones-finales, .corte-manual,
+  .modal-overlay, .footer { display: none !important; }
+
+  body { background: #fff; color: #000; }
+
+  .main-container { padding: 0; gap: 12px; }
+
+  .cortes-grid { grid-template-columns: repeat(3, 1fr); }
+
+  .corte-card, .final-card {
+    border: 1px solid #ccc;
+    box-shadow: none;
+    break-inside: avoid;
+  }
+
+  .resultado-valor { color: #000 !important; }
+}
+
+/* --------------------------------------------------------------------------
+   20. SCROLLBAR PERSONALIZADO (Webkit)
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
